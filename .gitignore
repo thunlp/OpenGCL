@@ -1,0 +1,13 @@
+/results
+/.idea
+/**/__pycache__
+/src/build/*
+/src/openne.egg-info/*
+/src/dist/*
+/src/testwalk.bat
+/**/*.pyc
+/ignored
+/src/logs/*
+/data/*
+/exps/processed
+/**/.DS_Store

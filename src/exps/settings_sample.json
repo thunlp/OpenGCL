@@ -1,0 +1,135 @@
+{
+    "task": {
+        "_options": {
+            "node": ["node"],
+            "graph": ["graph"]
+        }
+    },
+    "dataset": {
+        "_options": {
+            "unigraph": ["cora", "citeseer", "pubmed", "wikics", "coauthor_cs", "coauthor_phy", "amazon_computers", "amazon_photo"],
+            "multigraph": ["mutag", "imdb_binary", "imdb_multi", "reddit_binary", "ptc_mr"]
+        }
+    },
+    "_model": {
+        "enc": {
+            "_options": {
+                "raw": ["none"],
+                "basic": ["linear"],
+                "gnn": ["gin", "gcn", "gat"]
+            }
+        },
+        "dec": {
+            "_options": {
+                "a": ["inner", "bilinear"]
+            }
+        },
+        "sampler": {
+            "_options": {
+                "node": [
+                    "snr",
+                    "srr",
+                    "gca"
+                ],
+                "graph": ["dgi", "mvgrl", "graphcl"]
+            }
+        },
+        "readout": {
+            "_options": {
+                "default": ["mean", "sum"]
+            }
+        },
+        "est": {
+            "_options": {
+                "a": ["jsd", "nce"]
+            }
+        },
+        "_options": {
+            "node_node": {
+                "sampler": ["node"],
+                "readout": ["default"]
+            },
+            "node_graph": {
+                "enc": ["gnn"],
+                "sampler": ["graph"],
+                "readout": ["default"]
+            },
+            "graph_node": {
+                "sampler": ["node"]
+            },
+            "graph_graph": {
+                "enc": ["gnn"],
+                "sampler": ["graph"]
+            }
+        }
+    },
+    "_hyperparameters": {
+        "clf-ratio": {"_options": {"node": ["0.2"], "graph": ["0.8"]}},
+        "epochs": {"_options": {"a": ["500"]}},
+        "early-stopping": {"_options": {"a": ["20"]}},
+        "patience": {"_options": {"a": ["3"]}},
+        "output-dim": {"_options": {"node": ["64", "128"], "graph": ["64", "128"],
+                             "d0": ["32"], "d1": ["64"], "d2": ["128"], "d3": ["256"]}},
+        "hidden-size": {"_options": {"h0": ["0"], "h1": ["1"], "h2": ["2"], "h3": ["3"]}},
+        "learning-rate": {"_options": {"l0": ["0.001"], "l1": ["0.01"]}},
+        "_options": {
+            "node_clf": {
+                "clf-ratio": ["node"],
+                "output-dim": ["node"],
+                "learning-rate": ["l1"]
+            },
+            "graph_clf": {
+                "clf-ratio": ["graph"],
+                "output-dim": ["graph"],
+                "learning-rate": ["l1"]
+            },
+            "node_clf2": {
+                "clf-ratio": ["node"],
+                "output-dim": ["node"],
+                "learning-rate": ["l1"]
+            },
+            "graph_clf2": {
+                "clf-ratio": ["graph"],
+                "output-dim": ["graph"],
+                "learning-rate": ["l1"]
+            },
+            "node_clf1": {
+                "clf-ratio": ["node"],
+                "output-dim": ["d1"],
+                "learning-rate": ["l1"]
+            },
+            "graph_clf1": {
+                "clf-ratio": ["graph"],
+                "output-dim": ["d1"],
+                "learning-rate": ["l1"]
+            }
+        }
+    },
+    "_options": {
+        "node_node": {
+            "task": ["node"],
+            "dataset": ["unigraph"],
+            "_model": ["node_node"],
+            "_hyperparameters": ["node_clf"]
+        },
+        "node_graph": {
+            "task": ["node"],
+            "dataset": ["unigraph"],
+            "_model": ["node_graph"],
+            "_hyperparameters": ["node_clf"]
+        },
+        "graph_node": {
+            "task": ["graph"],
+            "dataset": ["multigraph"],
+            "_model": ["graph_node"],
+            "_hyperparameters": ["graph_clf"]
+        },
+        "graph_graph": {
+            "task": ["graph"],
+            "dataset": ["multigraph"],
+            "_model": ["graph_graph"],
+            "_hyperparameters": ["graph_clf"]
+        }
+
+    }
+}
